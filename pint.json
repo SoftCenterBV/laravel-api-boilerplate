@@ -1,0 +1,11 @@
+{
+    "preset": "psr12",
+    "rules": {
+
+    },
+    "exclude": [
+        "vendor",
+        "public",
+        "storage"
+    ]
+}
