@@ -82,7 +82,7 @@ class AuthController extends Controller
         ])->setStatusCode(200);
     }
 
-    public function initMfaSetup() : \Illuminate\Http\JsonResponse
+    public function initMfaSetup(): \Illuminate\Http\JsonResponse
     {
         $user = Auth::user();
         if ($user->mfa_secret) {
