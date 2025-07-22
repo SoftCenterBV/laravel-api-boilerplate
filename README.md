@@ -4,6 +4,9 @@
 
 ## Primary Features
 
+- Authentication system [Laravel Sanctum](https://laravel.com/docs/sanctum) for API token management.
+- MFA (Multi-Factor Authentication) support with TOTP.
+
 ## Code Quality
 
 - [Laravel Pint](https://github.com/laravel/pint) - A code style fixer based on the PSR-12 standard. 
