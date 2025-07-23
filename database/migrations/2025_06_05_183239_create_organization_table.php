@@ -33,7 +33,7 @@ return new class () extends Migration {
         Schema::table(
             'organizations',
             function (Blueprint $table) {
-                $table->foreignUuid('owner_id')->constrained('users')->cascadeOnUpdate();
+                $table->foreignUuid('owner_id')->nullable()->constrained('users')->cascadeOnUpdate();
                 $table->foreignUuid('parent_id')->nullable()->constrained('organizations')->cascadeOnUpdate();
             }
         );

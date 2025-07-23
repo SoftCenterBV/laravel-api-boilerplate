@@ -29,7 +29,7 @@ class OrganizationFactory extends Factory
             'billing_email' => $this->faker->email,
             'billing_details' => $this->faker->text(100),
             'parent_id' => null,
-            'owner_id' => $this->faker->uuid,
+            'owner_id' => null,
             'metadata' => json_encode([]),
         ];
     }

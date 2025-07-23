@@ -49,5 +49,11 @@ class Organization extends Model
         'deleted_at',
     ];
 
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'organization_user', 'organization_id', 'user_id')
+            ->withTimestamps();
+    }
+
 
 }
