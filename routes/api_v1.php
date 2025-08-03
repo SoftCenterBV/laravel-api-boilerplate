@@ -24,9 +24,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::apiResource('organizations', OrganizationController::class);
-    // access routes
-    Route::apiResource('access', AccessController::class)
-        ->only(['invite', 'reject'])
-        ->names('access');
+
+    Route::name('access.')->prefix('access')->group(function () {
+        Route::get('list', [AccessController::class, 'list'])->name('list');
+        Route::post('invite', [AccessController::class, 'invite'])->name('invite');
+        Route::post('accept', [AccessController::class, 'accept'])->name('accept');
+        Route::post('reject', [AccessController::class, 'reject'])->name('reject');
+        Route::post('revoke', [AccessController::class, 'revoke'])->name('revoke');
+    });
 
 });

@@ -14,7 +14,6 @@ class UserTest extends TestCase
 {
     use DatabaseMigrations;
     use DatabaseTransactions;
-    //    use RefreshDatabase;
     #[Test]
     public function it_has_a_belongs_to_many_companies_relationship(): void
     {

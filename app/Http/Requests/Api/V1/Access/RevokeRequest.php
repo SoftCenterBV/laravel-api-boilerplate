@@ -22,7 +22,7 @@ class RevokeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'invitation_id' => 'required|integer|exists:invitations,id',
+            'invitation_id' => 'required|integer|exists:organization_user_invites,id',
         ];
     }
 }

@@ -36,10 +36,7 @@ class OrganizationController extends Controller
     public function update(Organization $organization, UpdateOrganizationRequest $request): JsonResponse
     {
         $organization->fill($request->validated());
-        if ($organization->save()) {
-            return BaseApiResource::makeResponse($organization, 'Organization updated successfully.', 200);
-        }
-        return BaseApiResource::makeResponse(null, 'Organization failed to update.', 400);
+        return BaseApiResource::makeResponse($organization, 'Organization updated successfully.', 200);
     }
 
     public function destroy(Organization $organization): JsonResponse

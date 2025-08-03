@@ -22,14 +22,14 @@ class UpdateOrganizationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['nullable', 'string', 'max:255'],
+            'name' => ['filled', 'string', 'max:255'],
             'vat_number' => ['nullable', 'string', 'max:20'],
             'chamber_of_commerce' => ['nullable', 'string', 'max:20'],
-            'street' => ['nullable', 'string', 'max:255'],
-            'street_number' => ['nullable', 'string', 'max:10'],
-            'city' => ['nullable', 'string', 'max:100'],
-            'postal_code' => ['nullable', 'string', 'max:20'],
-            'country' => ['nullable', 'string', 'size:2'],
+            'street' => ['filled', 'string', 'max:255'],
+            'street_number' => ['filled', 'string', 'max:10'],
+            'city' => ['filled', 'string', 'max:100'],
+            'postal_code' => ['filled', 'string', 'max:20'],
+            'country' => ['filled', 'string', 'size:2'],
             'billing_email' => ['nullable', 'email', 'max:255'],
             'billing_details' => ['nullable', 'string', 'max:500'],
             'metadata' => ['nullable', 'array'],

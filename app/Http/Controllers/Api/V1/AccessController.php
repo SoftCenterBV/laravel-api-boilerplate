@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Events\AcceptUserInvite;
+use App\Events\RejectUserInvite;
 use App\Events\RevokeUserInvite;
 use App\Events\SendUserInvite;
 use App\Http\Controllers\Controller;
@@ -17,6 +18,18 @@ use Illuminate\Support\Str;
 
 class AccessController extends Controller
 {
+
+    public function list(): JsonResponse
+    {
+        $invites = OrganizationUserInvite::query()
+            ->where('email', auth()->user()->email)
+            ->whereNull('accepted_at')
+            ->whereNull('rejected_at')
+            ->orderBy('created_at', 'desc')
+            ->paginate();
+
+        return BaseApiResource::makeResponse($invites, 'Invitations retrieved successfully.', 200);
+    }
     public function invite(InviteRequest $request): JsonResponse
     {
         $data = $request->validated();
@@ -41,14 +54,7 @@ class AccessController extends Controller
     public function accept(AcceptRequest $request): JsonResponse
     {
         $data = $request->validated();
-
-        // Decrypt the token
-        $token = decrypt($data['token']);
-
-        // Validate the token and check if it exists in the database
-        $invite = OrganizationUserInvite::query()
-            ->where('token', $token)
-            ->first();
+        $invite = OrganizationUserInvite::query()->where('token', $data['token'])->first();
 
         if (!$invite) {
             return BaseApiResource::makeResponse(null, 'Invalid or expired invitation token.', 404);
@@ -60,7 +66,6 @@ class AccessController extends Controller
 
         $invite->organization->users()->attach(auth()->id());
 
-
         AcceptUserInvite::dispatch($invite);
 
         return BaseApiResource::makeResponse($invite, 'Invitation accepted successfully.', 200);
@@ -69,28 +74,24 @@ class AccessController extends Controller
     public function reject(RejectRequest $request): JsonResponse
     {
         $data = $request->validated();
-
-        // Decrypt the token
-        $token = decrypt($data['token']);
-
-        // Validate the token and check if it exists in the database
         $invite = OrganizationUserInvite::query()
-            ->where('token', $token)
+            ->where('token', $data['token'])
             ->first();
 
         if (!$invite) {
             return BaseApiResource::makeResponse(null, 'Invalid or expired invitation token.', 404);
         }
 
-        // Logic to remove the invitation from the database
         $invite->update([
             'rejected_at' => now(),
         ]);
 
+        RejectUserInvite::dispatch($invite);
+
         return BaseApiResource::makeResponse($invite, 'Invitation rejected successfully.', 200);
     }
 
-    public function revoke(RevokeRequest $request, string $invitationId): JsonResponse
+    public function revoke(RevokeRequest $request): JsonResponse
     {
         $data = $request->validated();
 

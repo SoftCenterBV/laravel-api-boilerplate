@@ -23,7 +23,8 @@ class InviteRequest extends FormRequest
     {
         return [
             'email' => 'required|email',
-            'role' => 'required|string|in:admin,user,viewer',
+            'organization_id' => 'required|exists:organizations,id',
+            'role' => 'nullable|string|in:admin,user,viewer',
         ];
     }
 }
