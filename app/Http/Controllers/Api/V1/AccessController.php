@@ -63,7 +63,7 @@ class AccessController extends Controller
             'accepted_at' => now(),
         ]);
 
-        $invite->organization?->users()->attach(auth()->id());
+        $invite->organization->users()->attach(auth()->id());
 
         AcceptUserInvite::dispatch($invite);
 
