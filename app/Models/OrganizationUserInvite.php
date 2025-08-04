@@ -20,9 +20,8 @@ class OrganizationUserInvite extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<string>
+     * @var list<string>
      */
-
     protected $fillable = [
         'organization_id',
         'email',
@@ -33,9 +32,9 @@ class OrganizationUserInvite extends Model
     ];
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that should be hidden for serialization.
      *
-     * @var array<string>
+     * @var list<string>
      */
     protected $hidden = [
         'created_at',

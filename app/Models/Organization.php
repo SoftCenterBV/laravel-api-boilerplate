@@ -19,9 +19,8 @@ class Organization extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<string>
+     * @var list<string>
      */
-
     protected $fillable = [
         'name',
         'vat_number',
@@ -38,9 +37,9 @@ class Organization extends Model
     ];
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that should be hidden for serialization.
      *
-     * @var array<string>
+     * @var list<string>
      */
     protected $hidden = [
         'owner_id',
