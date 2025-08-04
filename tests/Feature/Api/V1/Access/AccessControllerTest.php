@@ -8,14 +8,12 @@ use App\Models\OrganizationUserInvite;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-class  AccessControllerTest extends TestCase
+class AccessControllerTest extends TestCase
 {
-
     use DatabaseMigrations;
     use DatabaseTransactions;
 
@@ -180,7 +178,7 @@ class  AccessControllerTest extends TestCase
             'token' => $token,
         ]);
 
-//        dd($response->json());
+        //        dd($response->json());
 
         $response->assertStatus(200)
             ->assertJson([

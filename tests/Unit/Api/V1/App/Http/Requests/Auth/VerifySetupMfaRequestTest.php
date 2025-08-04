@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Api\V1\App\Http\Requests\Auth;
 
-use App\Http\Requests\Api\V1\Auth\VerifyMfaRequest;
 use App\Http\Requests\Api\V1\Auth\VerifySetupMfaRequest;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

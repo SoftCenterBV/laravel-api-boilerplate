@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Pagination\AbstractPaginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class BaseApiResource extends JsonResource
 {
@@ -15,7 +15,7 @@ class BaseApiResource extends JsonResource
             'data' => $data
         ];
 
-        if ($data instanceof AbstractPaginator) {
+        if ($data instanceof LengthAwarePaginator) {
             $response['pagination'] = [
                 'current_page' => $data->currentPage(),
                 'last_page' => $data->lastPage(),

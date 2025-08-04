@@ -3,6 +3,6 @@ includes:
 parameters:
     paths:
         - app
-    level: 1
+    level: 2
     ignoreErrors:
     excludePaths:

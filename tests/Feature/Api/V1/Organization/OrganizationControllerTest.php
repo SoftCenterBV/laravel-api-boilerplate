@@ -11,7 +11,6 @@ use Tests\TestCase;
 
 class OrganizationControllerTest extends TestCase
 {
-
     use DatabaseMigrations;
     use DatabaseTransactions;
 
@@ -233,7 +232,7 @@ class OrganizationControllerTest extends TestCase
             ]);
 
         // Verify that the organization is actually deleted
-//        $this->assertDatabaseMissing('organizations', ['id' => $organization->id]);
+        //        $this->assertDatabaseMissing('organizations', ['id' => $organization->id]);
     }
 
 }

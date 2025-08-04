@@ -2,7 +2,6 @@
 
 namespace App\Events;
 
-use App\Models\OrganizationUserInvite;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -14,12 +13,12 @@ class RevokeUserInvite
     use InteractsWithSockets;
     use SerializesModels;
 
-    protected OrganizationUserInvite $invite;
+    protected int|bool $invite;
 
     /**
      * Create a new event instance.
      */
-    public function __construct(OrganizationUserInvite $invite)
+    public function __construct(int|bool $invite)
     {
         $this->invite = $invite;
     }

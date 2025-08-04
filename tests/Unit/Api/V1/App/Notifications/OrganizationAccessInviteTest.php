@@ -11,7 +11,6 @@ use Tests\TestCase;
 
 class OrganizationAccessInviteTest extends TestCase
 {
-
     use DatabaseTransactions;
     use DatabaseMigrations;
 

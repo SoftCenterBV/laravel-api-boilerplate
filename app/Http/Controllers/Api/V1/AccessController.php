@@ -18,7 +18,6 @@ use Illuminate\Support\Str;
 
 class AccessController extends Controller
 {
-
     public function list(): JsonResponse
     {
         $invites = OrganizationUserInvite::query()
@@ -64,7 +63,7 @@ class AccessController extends Controller
             'accepted_at' => now(),
         ]);
 
-        $invite->organization->users()->attach(auth()->id());
+        $invite->organization?->users()->attach(auth()->id());
 
         AcceptUserInvite::dispatch($invite);
 
