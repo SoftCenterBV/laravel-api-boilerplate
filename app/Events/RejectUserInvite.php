@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\OrganizationUserInvite;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -13,12 +14,14 @@ class RejectUserInvite
     use InteractsWithSockets;
     use SerializesModels;
 
+    protected OrganizationUserInvite $invite;
+
     /**
      * Create a new event instance.
      */
-    public function __construct()
+    public function __construct(OrganizationUserInvite $invite)
     {
-        //
+        $this->invite = $invite;
     }
 
     /**
