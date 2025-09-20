@@ -21,7 +21,6 @@ class AccessController extends Controller
     public function list(): JsonResponse
     {
         $invites = OrganizationUserInvite::query()
-            ->where('email', auth()->user()->email)
             ->whereNull('accepted_at')
             ->whereNull('rejected_at')
             ->orderBy('created_at', 'desc')
@@ -47,7 +46,7 @@ class AccessController extends Controller
 
         SendUserInvite::dispatch($invite);
 
-        return BaseApiResource::makeResponse($invite, 'Invitation sent successfully.', 200);
+        return BaseApiResource::makeResponse($invite, 'Invitation sent successfully.', 201);
     }
 
     public function accept(AcceptRequest $request): JsonResponse

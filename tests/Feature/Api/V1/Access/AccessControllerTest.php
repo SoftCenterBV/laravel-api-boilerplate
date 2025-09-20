@@ -71,7 +71,7 @@ class AccessControllerTest extends TestCase
             'role' => 'admin'
         ]);
 
-        $response->assertStatus(200)
+        $response->assertStatus(201)
             ->assertJsonStructure([
                 'message',
                 'data' => [
