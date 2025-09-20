@@ -7,6 +7,7 @@ use App\Http\Requests\Api\V1\Auth\LoginRequest;
 use App\Http\Requests\Api\V1\Auth\RegisterRequest;
 use App\Http\Requests\Api\V1\Auth\VerifyMfaRequest;
 use App\Http\Requests\Api\V1\Auth\VerifySetupMfaRequest;
+use App\Http\Resources\BaseApiResource;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -145,10 +146,9 @@ class AuthController extends Controller
             'password' => bcrypt($request->input('password')),
         ]);
 
-        return response()->json([
-            'message' => 'Registration successful',
+        return BaseApiResource::makeResponse([
             'token' => $user->createToken('User Token')->plainTextToken,
             'user' => $user->toArray(),
-        ])->setStatusCode(201);
+        ], 'User registered successfully.', 201);
     }
 }
