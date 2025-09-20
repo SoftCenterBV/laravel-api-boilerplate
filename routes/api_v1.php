@@ -11,9 +11,10 @@ Route::get('health', function () {
 })->name('health');
 
 
-Route::name('auth.')->prefix('auth')->group(function () {
+Route::name('auth.')->prefix('auth')->middleware(['throttle:basic-login'])->group(function () {
     Route::post('login', [AuthController::class, 'login'])->name('login');
     Route::post('verify-mfa', [AuthController::class, 'verifyMfa'])->name('mfa.verify');
+    Route::post('register', [AuthController::class, 'register'])->name('register');
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
