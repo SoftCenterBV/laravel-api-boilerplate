@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\Api\V1\AccessController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\OrganizationController;
 use Illuminate\Support\Facades\Route;
@@ -10,9 +11,10 @@ Route::get('health', function () {
 })->name('health');
 
 
-Route::name('auth.')->prefix('auth')->group(function () {
+Route::name('auth.')->prefix('auth')->middleware(['throttle:basic-login'])->group(function () {
     Route::post('login', [AuthController::class, 'login'])->name('login');
     Route::post('verify-mfa', [AuthController::class, 'verifyMfa'])->name('mfa.verify');
+    Route::post('register', [AuthController::class, 'register'])->name('register');
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -23,4 +25,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::apiResource('organizations', OrganizationController::class);
+
+    Route::name('access.')->prefix('access')->group(function () {
+        Route::get('list', [AccessController::class, 'list'])->name('list');
+        Route::post('invite', [AccessController::class, 'invite'])->name('invite');
+        Route::post('accept', [AccessController::class, 'accept'])->name('accept');
+        Route::post('reject', [AccessController::class, 'reject'])->name('reject');
+        Route::post('revoke', [AccessController::class, 'revoke'])->name('revoke');
+    });
+
 });

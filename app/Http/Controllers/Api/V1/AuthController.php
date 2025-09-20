@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\Auth\LoginRequest;
+use App\Http\Requests\Api\V1\Auth\RegisterRequest;
 use App\Http\Requests\Api\V1\Auth\VerifyMfaRequest;
 use App\Http\Requests\Api\V1\Auth\VerifySetupMfaRequest;
 use App\Models\User;
@@ -133,5 +134,21 @@ class AuthController extends Controller
         cache()->forget("mfa_setup_{$user->id}");
 
         return response()->json(['message' => 'MFA enabled successfully']);
+    }
+
+    public function register(RegisterRequest $request): \Illuminate\Http\JsonResponse
+    {
+        $user = User::query()->create([
+            'first_name' => $request->input('first_name'),
+            'last_name' => $request->input('last_name'),
+            'email' => $request->input('email'),
+            'password' => bcrypt($request->input('password')),
+        ]);
+
+        return response()->json([
+            'message' => 'Registration successful',
+            'token' => $user->createToken('User Token')->plainTextToken,
+            'user' => $user->toArray(),
+        ])->setStatusCode(201);
     }
 }

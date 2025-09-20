@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 
@@ -18,9 +19,8 @@ class Organization extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<string>
+     * @var list<string>
      */
-
     protected $fillable = [
         'name',
         'vat_number',
@@ -37,9 +37,9 @@ class Organization extends Model
     ];
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that should be hidden for serialization.
      *
-     * @var array<string>
+     * @var list<string>
      */
     protected $hidden = [
         'owner_id',
@@ -48,6 +48,12 @@ class Organization extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'organization_user', 'organization_id', 'user_id')
+            ->withTimestamps();
+    }
 
 
 }
