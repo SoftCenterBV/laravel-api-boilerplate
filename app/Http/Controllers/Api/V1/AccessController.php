@@ -54,7 +54,7 @@ class AccessController extends Controller
         $data = $request->validated();
         $invite = OrganizationUserInvite::query()->where('token', $data['token'])->first();
 
-        if (!$invite) {
+        if (!$invite || $invite->isAccepted() || $invite->isRejected()) {
             return BaseApiResource::makeResponse(null, 'Invalid or expired invitation token.', 404);
         }
 
@@ -76,7 +76,7 @@ class AccessController extends Controller
             ->where('token', $data['token'])
             ->first();
 
-        if (!$invite) {
+        if (!$invite || $invite->isAccepted() || $invite->isRejected()) {
             return BaseApiResource::makeResponse(null, 'Invalid or expired invitation token.', 404);
         }
 
