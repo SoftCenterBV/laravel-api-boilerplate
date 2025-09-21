@@ -41,7 +41,7 @@ class AccessController extends Controller
 
         if ($existingInvite) {
             return BaseApiResource::makeResponse(
-                $existingInvite,
+                null,
                 'An active invitation already exists for this user.',
                 409 // Conflict
             );
