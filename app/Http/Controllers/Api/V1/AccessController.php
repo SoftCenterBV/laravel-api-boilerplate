@@ -31,6 +31,21 @@ class AccessController extends Controller
     public function invite(InviteRequest $request): JsonResponse
     {
         $data = $request->validated();
+
+        $existingInvite = OrganizationUserInvite::query()
+            ->where('email', $data['email'])
+            ->where('organization_id', $data['organization_id'])
+            ->whereNull('accepted_at')
+            ->whereNull('rejected_at')
+            ->first();
+
+        if ($existingInvite) {
+            return BaseApiResource::makeResponse(
+                $existingInvite,
+                'An active invitation already exists for this user.',
+                409 // Conflict
+            );
+        }
         // generate a unique token based on a random string + email + current timestamp
         $token = Str::random(32) . '-' . md5($data['email']) . '-' . time();
         // Encrypt the token for security
