@@ -18,9 +18,11 @@ use Illuminate\Support\Str;
 
 class AccessController extends Controller
 {
+
     public function list(): JsonResponse
     {
         $invites = OrganizationUserInvite::query()
+            ->where('email', auth()->user()->email)
             ->whereNull('accepted_at')
             ->whereNull('rejected_at')
             ->orderBy('created_at', 'desc')

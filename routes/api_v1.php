@@ -4,6 +4,8 @@
 use App\Http\Controllers\Api\V1\AccessController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\OrganizationController;
+use App\Http\Controllers\Api\V1\OrganizationUserController;
+use App\Http\Controllers\Api\V1\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('health', function () {
@@ -24,7 +26,28 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('setup-mfa', [AuthController::class, 'verifyMfaSetup'])->name('mfa.setup.verify');
     });
 
-    Route::apiResource('organizations', OrganizationController::class);
+    Route::name('user.')->prefix('users')->group(function (){
+        Route::get('me',[UserController::class, 'me'])->name('me');
+        Route::patch('{user}',[UserController::class, 'update'])->name('update');
+        Route::delete('{user}',[UserController::class, 'destroy'])->name('destroy');
+        Route::get('export-data',[UserController::class, 'exportData'])->name('export-data');
+
+    });
+//    Route::apiResource('organizations', OrganizationController::class);
+
+    Route::name('organization.')->prefix('organization')->group(function () {
+        Route::get('/',[OrganizationController::class, 'index'])->name('index');
+        Route::prefix('{organization}')->group(function () {
+            Route::get('/',[OrganizationController::class, 'show'])->name('show');
+            Route::patch('/',[OrganizationController::class, 'update'])->name('update');
+            Route::delete('/',[OrganizationController::class, 'destroy'])->name('destroy');
+            Route::name('user.')->prefix('user')->group(function () {
+                Route::get('list', [OrganizationUserController::class, 'list'])->name('list');
+                Route::get('pending-invites', [OrganizationUserController::class, 'pendingInvites'])->name('pending-invites');
+                Route::post('delete', [OrganizationUserController::class, 'delete'])->name('delete');
+            });
+        });
+    });
 
     Route::name('access.')->prefix('access')->group(function () {
         Route::get('list', [AccessController::class, 'list'])->name('list');

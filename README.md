@@ -6,6 +6,9 @@
 
 - Authentication system [Laravel Sanctum](https://laravel.com/docs/sanctum) for API token management.
 - MFA (Multi-Factor Authentication) support with TOTP.
+- Multi tenancy support
+- User Invitations
+
 
 ## Code Quality
 
