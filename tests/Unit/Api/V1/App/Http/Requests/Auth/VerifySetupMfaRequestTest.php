@@ -11,8 +11,6 @@ use Tests\TestCase;
 
 class VerifySetupMfaRequestTest extends TestCase
 {
-    use DatabaseTransactions;
-    use DatabaseMigrations;
     #[Test]
     public function it_validates_all_data_fields(): void
     {

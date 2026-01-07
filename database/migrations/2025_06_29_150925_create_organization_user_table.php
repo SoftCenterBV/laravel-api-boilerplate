@@ -29,7 +29,9 @@ return new class () extends Migration {
                 ->onDelete('cascade');
             $table->string('email');
             $table->string('role')->default('member'); // Default role is 'member'
-            $table->string('token')->unique();
+            // Store the full encrypted token in a TEXT column (tokens can be long).
+            // Avoid creating a unique index on this column to prevent MySQL key length issues.
+            $table->text('token');
             $table->timestamp('accepted_at')->nullable();
             $table->timestamp('rejected_at')->nullable();
             $table->timestamps();
@@ -43,6 +45,7 @@ return new class () extends Migration {
      */
     public function down(): void
     {
+        Schema::dropIfExists('organization_user_invites');
         Schema::dropIfExists('organization_user');
     }
 };

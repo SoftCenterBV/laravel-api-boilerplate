@@ -12,8 +12,6 @@ use Tests\TestCase;
 
 class StoreOrganizationRequestTest extends TestCase
 {
-    use DatabaseTransactions;
-    use DatabaseMigrations;
 
     public function correctData(): array
     {

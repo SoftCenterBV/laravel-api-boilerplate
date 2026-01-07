@@ -12,8 +12,6 @@ use Tests\TestCase;
 
 class BaseApiResourceTest extends TestCase
 {
-    use DatabaseMigrations;
-    use DatabaseTransactions;
     #[Test]
     public function it_make_response_with_normal_data()
     {

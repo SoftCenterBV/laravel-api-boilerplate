@@ -6,7 +6,6 @@ use App\Events\SendUserInvite;
 use App\Models\Organization;
 use App\Models\OrganizationUserInvite;
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Event;
 use PHPUnit\Framework\Attributes\Test;
@@ -14,9 +13,6 @@ use Tests\TestCase;
 
 class AccessControllerTest extends TestCase
 {
-    use DatabaseMigrations;
-    use DatabaseTransactions;
-
     #[Test]
     public function list_returns_user_invitations()
     {
@@ -29,7 +25,7 @@ class AccessControllerTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = $this->getJson('/api/access/list');
+        $response = $this->getJson('/api/v1/access/list');
 
         $response->assertStatus(200)
             ->assertJsonStructure([
@@ -65,7 +61,7 @@ class AccessControllerTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = $this->postJson('/api/access/invite', [
+        $response = $this->postJson('/api/v1/access/invite', [
             'email' => 'invitee@example.com',
             'organization_id' => $organization->id,
             'role' => 'admin'
@@ -99,7 +95,7 @@ class AccessControllerTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $response = $this->postJson('/api/access/invite', []);
+        $response = $this->postJson('/api/v1/access/invite', []);
         $response->assertStatus(422)
             ->assertJsonValidationErrors(['email', 'organization_id']);
     }
@@ -118,7 +114,7 @@ class AccessControllerTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = $this->postJson('/api/access/accept', [
+        $response = $this->postJson('/api/v1/access/accept', [
             'token' => $token,
         ]);
 
@@ -148,7 +144,7 @@ class AccessControllerTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $response = $this->postJson('/api/access/accept', [
+        $response = $this->postJson('/api/v1/access/accept', [
             'token' => encrypt('invalid-token'),
         ]);
 
@@ -174,7 +170,7 @@ class AccessControllerTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = $this->postJson('/api/access/reject', [
+        $response = $this->postJson('/api/v1/access/reject', [
             'token' => $token,
         ]);
 
@@ -210,7 +206,7 @@ class AccessControllerTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $response = $this->postJson('/api/access/reject', [
+        $response = $this->postJson('/api/v1/access/reject', [
             'token' => encrypt('invalid-token'),
         ]);
 
@@ -234,7 +230,7 @@ class AccessControllerTest extends TestCase
             'role' => 'admin',
         ]);
         $this->actingAs($user);
-        $response = $this->postJson("/api/access/revoke", [
+        $response = $this->postJson("/api/v1/access/revoke", [
             'invitation_id' => $invite->id,
         ]);
         $response->assertStatus(200)

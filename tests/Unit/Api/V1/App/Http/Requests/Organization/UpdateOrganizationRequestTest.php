@@ -12,9 +12,6 @@ use Tests\TestCase;
 
 class UpdateOrganizationRequestTest extends TestCase
 {
-    use DatabaseTransactions;
-    use DatabaseMigrations;
-
     public function correctData(): array
     {
         $organization = Organization::factory()->create();

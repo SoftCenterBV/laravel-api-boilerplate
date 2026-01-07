@@ -11,8 +11,6 @@ use Tests\TestCase;
 
 class OrganizationControllerTest extends TestCase
 {
-    use DatabaseTransactions;
-
     #[Test]
     public function list_organization_returns_a_list_of_organizations()
     {

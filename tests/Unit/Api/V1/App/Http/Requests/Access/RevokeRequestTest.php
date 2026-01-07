@@ -12,8 +12,6 @@ use Tests\TestCase;
 
 class RevokeRequestTest extends TestCase
 {
-    use DatabaseTransactions;
-    use DatabaseMigrations;
     #[Test]
     public function it_validates_required_fields(): void
     {
