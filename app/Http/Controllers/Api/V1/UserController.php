@@ -10,13 +10,13 @@ use App\Models\User;
 
 class UserController extends Controller
 {
-
     public function me()
     {
         return BaseApiResource::makeResponse(auth()->user(), 'User retrieved successfully.', 200);
     }
 
-    public function update(User $user, UpdateUserRequest $request){
+    public function update(User $user, UpdateUserRequest $request)
+    {
         $user->fill($request->validated());
         $user->save();
         return BaseApiResource::makeResponse($user, 'User updated successfully.', 200);

@@ -1,0 +1,20 @@
+{
+    "mcpServers": {
+        "laravel-boost": {
+            "command": "/opt/homebrew/Cellar/php/8.4.6/bin/php",
+            "args": [
+                "/Users/stevenhooisma/PhpstormProjects/laravel-api-boilerplate/artisan",
+                "boost:mcp"
+            ]
+        },
+        "herd": {
+            "command": "/opt/homebrew/Cellar/php/8.4.6/bin/php",
+            "args": [
+                "/Applications/Herd.app/Contents/Resources/herd-mcp.phar"
+            ],
+            "env": {
+                "SITE_PATH": "/Users/stevenhooisma/PhpstormProjects/laravel-api-boilerplate"
+            }
+        }
+    }
+}

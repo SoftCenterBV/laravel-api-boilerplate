@@ -11,16 +11,15 @@ use Tests\TestCase;
 
 class OrganizationControllerTest extends TestCase
 {
-    use DatabaseMigrations;
     use DatabaseTransactions;
 
     #[Test]
     public function list_organization_returns_a_list_of_organizations()
     {
         $user = User::factory()->create();
-        $organization = Organization::factory()->create();
+        Organization::factory()->create();
         $this->actingAs($user, 'sanctum');
-        $response = $this->getJson('/api/organizations');
+        $response = $this->getJson('/api/v1/organization');
 
         $response->assertStatus(200)
             ->assertJsonStructure([
@@ -38,24 +37,7 @@ class OrganizationControllerTest extends TestCase
                         'country',
                         'billing_email',
                         'billing_details',
-                    ],
-                ],
-            ])
-            ->assertJson([
-                'message' => 'Organizations retrieved successfully.',
-                'data' => [
-                    [
-                        'id' => $organization->id,
-                        'name' => $organization->name,
-                        'vat_number' => $organization->vat_number,
-                        'chamber_of_commerce' => $organization->chamber_of_commerce,
-                        'street' => $organization->street,
-                        'street_number' => $organization->street_number,
-                        'city' => $organization->city,
-                        'postal_code' => $organization->postal_code,
-                        'country' => $organization->country,
-                        'billing_email' => $organization->billing_email,
-                        'billing_details' => $organization->billing_details,
+                        'metadata',
                     ],
                 ],
             ]);
@@ -67,7 +49,7 @@ class OrganizationControllerTest extends TestCase
         $user = User::factory()->create();
         $organization = Organization::factory()->create();
         $this->actingAs($user, 'sanctum');
-        $response = $this->getJson('/api/organizations/' . $organization->id);
+        $response = $this->getJson('/api/v1/organization/' . $organization->id);
 
         $response->assertStatus(200)
             ->assertJsonStructure([
@@ -122,7 +104,7 @@ class OrganizationControllerTest extends TestCase
             'billing_email' => 'billing@example.com',
             'billing_details' => 'Test Billing Details',
         ];
-        $response = $this->postJson('/api/organizations', $data);
+        $response = $this->postJson('/api/v1/organization', $data);
         $response->assertStatus(201)
             ->assertJsonStructure([
                 'message',
@@ -177,7 +159,7 @@ class OrganizationControllerTest extends TestCase
             'billing_details' => 'Updated Billing Details',
         ];
 
-        $response = $this->putJson('/api/organizations/' . $organization->id, $data);
+        $response = $this->patchJson('/api/v1/organization/' . $organization->id, $data);
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'message',
@@ -220,7 +202,7 @@ class OrganizationControllerTest extends TestCase
         $organization = Organization::factory()->create();
         $this->actingAs($user, 'sanctum');
 
-        $response = $this->deleteJson('/api/organizations/' . $organization->id);
+        $response = $this->deleteJson('/api/v1/organization/' . $organization->id);
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'message',

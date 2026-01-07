@@ -18,7 +18,6 @@ use Illuminate\Support\Str;
 
 class AccessController extends Controller
 {
-
     public function list(): JsonResponse
     {
         $invites = OrganizationUserInvite::query()

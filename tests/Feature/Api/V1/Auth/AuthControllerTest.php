@@ -15,7 +15,6 @@ use Tests\TestCase;
 class AuthControllerTest extends TestCase
 {
     use DatabaseTransactions;
-    use DatabaseMigrations;
     use WithFaker;
     /**
      * A basic feature test example.
@@ -27,7 +26,7 @@ class AuthControllerTest extends TestCase
             'password' => bcrypt('password123'),
         ]);
 
-        $response = $this->postJson('/api/auth/login', [
+        $response = $this->postJson('/api/v1/auth/login', [
             'email' => $user->email,
             'password' => 'password123',
         ]);
@@ -60,7 +59,7 @@ class AuthControllerTest extends TestCase
             'password' => bcrypt('password123'),
         ]);
 
-        $response = $this->postJson('/api/auth/login', [
+        $response = $this->postJson('/api/v1/auth/login', [
             'email' => $user->email,
             'password' => 'pass',
         ]);
@@ -82,7 +81,7 @@ class AuthControllerTest extends TestCase
 
 
 
-        $response = $this->postJson('/api/auth/login', [
+        $response = $this->postJson('/api/v1/auth/login', [
             'email' => $user->email,
             'password' => 'password123',
         ]);
@@ -102,7 +101,7 @@ class AuthControllerTest extends TestCase
         $user = User::factory()->create();
         $token = $user->createToken('Test Token')->plainTextToken;
         $response = $this->withHeaders(['Authorization' => "Bearer $token"])
-            ->postJson('/api/auth/logout');
+            ->postJson('/api/v1/auth/logout');
         $response->assertStatus(200)
             ->assertJson([
                 'message' => 'Logout successful',
@@ -120,7 +119,7 @@ class AuthControllerTest extends TestCase
         $user = User::factory()->create(['mfa_secret' => null]);
         $this->actingAs($user);
 
-        $response = $this->getJson('/api/auth/setup-mfa');
+        $response = $this->getJson('/api/v1/auth/setup-mfa');
 
         $response->assertStatus(200);
         $response->assertJsonStructure(['message', 'secret', 'qrCodeUrl']);
@@ -131,7 +130,7 @@ class AuthControllerTest extends TestCase
     {
         $user = User::factory()->create(['mfa_secret' => 'test']);
         $this->actingAs($user);
-        $response = $this->getJson('/api/auth/setup-mfa');
+        $response = $this->getJson('/api/v1/auth/setup-mfa');
         $response->assertStatus(400)
             ->assertJson([
                 'message' => 'MFA already enabled',
@@ -150,7 +149,7 @@ class AuthControllerTest extends TestCase
 
         Cache::put("mfa_setup_{$user->id}", $secret, now()->addMinutes(10));
 
-        $response = $this->postJson('/api/auth/setup-mfa', [
+        $response = $this->postJson('/api/v1/auth/setup-mfa', [
             'code' => $google2fa->getCurrentOtp($secret),
         ]);
 
@@ -173,7 +172,7 @@ class AuthControllerTest extends TestCase
         $secret = $google2fa->generateSecretKey();
         Cache::put("mfa_setup_{$user->id}", $secret, now()->addMinutes(10));
 
-        $response = $this->postJson('/api/auth/setup-mfa', [
+        $response = $this->postJson('/api/v1/auth/setup-mfa', [
             'code' => '123456', // Invalid code
         ]);
 
@@ -192,7 +191,7 @@ class AuthControllerTest extends TestCase
         // Ensure no secret is cached
         Cache::forget("mfa_setup_{$user->id}");
 
-        $response = $this->postJson('/api/auth/setup-mfa', [
+        $response = $this->postJson('/api/v1/auth/setup-mfa', [
             'code' => '123456',
         ]);
 
@@ -219,7 +218,7 @@ class AuthControllerTest extends TestCase
         $mfaSessionToken = bin2hex(random_bytes(32));
         Cache::put("mfa_session_{$mfaSessionToken}", $user->id, 300);
 
-        $response = $this->postJson('/api/auth/verify-mfa', [
+        $response = $this->postJson('/api/v1/auth/verify-mfa', [
             'mfaSessionToken' => $mfaSessionToken,
             'mfaCode' => $google2fa->getCurrentOtp($secret),
         ]);
@@ -259,7 +258,7 @@ class AuthControllerTest extends TestCase
         $mfaSessionToken = bin2hex(random_bytes(32));
         Cache::put("mfa_session_{$mfaSessionToken}", $user->id, 300);
 
-        $response = $this->postJson('/api/auth/verify-mfa', [
+        $response = $this->postJson('/api/v1/auth/verify-mfa', [
             'mfaSessionToken' => $mfaSessionToken,
             'mfaCode' => '123456', // Invalid code
         ]);
@@ -277,7 +276,7 @@ class AuthControllerTest extends TestCase
             'mfa_secret' => Crypt::encrypt('dummy-secret'),
         ]);
 
-        $response = $this->postJson('/api/auth/verify-mfa', [
+        $response = $this->postJson('/api/v1/auth/verify-mfa', [
             'mfaSessionToken' => 'invalid_token',
             'mfaCode' => '123456',
         ]);

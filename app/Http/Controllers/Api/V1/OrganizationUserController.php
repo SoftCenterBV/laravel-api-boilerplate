@@ -8,7 +8,6 @@ use App\Models\OrganizationUserInvite;
 
 class OrganizationUserController extends Controller
 {
-
     public function pendingInvites()
     {
         $invites = OrganizationUserInvite::query()
